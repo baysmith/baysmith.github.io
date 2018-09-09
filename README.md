@@ -1,4 +1,4 @@
-baysmith.github.com
+baysmith.github.io
 ===================
 
 User pages
