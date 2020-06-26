@@ -211,6 +211,13 @@
             });
 
             canvas.addEventListener("touchstart", function (event) {
+                // Enable wake lock.
+                // (must be wrapped in a user input event handler e.g. a mouse or touch handler)
+                if (!no_sleep_enabled) {
+                    no_sleep.enable();
+                    no_sleep_enabled = true;
+                    console.log("no sleep enabled");
+                }
                 g_is_touch = true;
                 g_mouse_pos = { x: event.touches[0].pageX, y: event.touches[0].pageY };
                 g_mouse_down = true;
