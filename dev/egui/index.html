@@ -108,10 +108,10 @@
         }
 
         function auto_resize_canvas(canvas) {
-            canvas.style.width = window.innerWidth + "px";
-            canvas.style.height = window.innerHeight + "px";
-            canvas.width = window.innerWidth * pixels_per_point();
-            canvas.height = window.innerHeight * pixels_per_point();
+            // canvas.style.width = window.innerWidth + "px";
+            // canvas.style.height = window.innerHeight + "px";
+            // canvas.width = window.innerWidth * pixels_per_point();
+            // canvas.height = window.innerHeight * pixels_per_point();
         }
 
         function get_egui_input(canvas) {
@@ -174,10 +174,14 @@
             canvas.addEventListener("mousedown", function (event) {
                 // Enable wake lock.
                 // (must be wrapped in a user input event handler e.g. a mouse or touch handler)
-                if (!no_sleep_enabled) {
-                    no_sleep.enable();
+                // if (!no_sleep_enabled) {
+                //     no_sleep.enable();
+                //     no_sleep_enabled = true;
+                //     console.log("no sleep enabled");
+                // }
+                console.log("wakeLock", window.navigator);
+                if ("wakeLock" in window.navigator) {
                     no_sleep_enabled = true;
-                    console.log("no sleep enabled");
                 }
 
                 if (g_is_touch) { return; }
@@ -213,11 +217,15 @@
             canvas.addEventListener("touchstart", function (event) {
                 // Enable wake lock.
                 // (must be wrapped in a user input event handler e.g. a mouse or touch handler)
-                if (!no_sleep_enabled) {
-                    no_sleep.enable();
+                // if (!no_sleep_enabled) {
+                //     no_sleep.enable();
+                //     no_sleep_enabled = true;
+                //     console.log("no sleep enabled");
+                // }
+                if ("wakeLock" in window.navigator) {
                     no_sleep_enabled = true;
-                    console.log("no sleep enabled");
                 }
+
                 g_is_touch = true;
                 g_mouse_pos = { x: event.touches[0].pageX, y: event.touches[0].pageY };
                 g_mouse_down = true;
@@ -313,8 +321,63 @@
             return null;
         }
     </script>
+
+    <p style="color: white;">Wake Lock status: <b id="status">unknown</b>.</p>
+    <p style="color: white;">Supported API: <b id="api">none</b>.</p>
+    <p style="color: white;"><button onclick="wake_lock_toggle()">Toggle</button></p>
+
     <!-- We later make this cover the entire screen even when resized -->
     <canvas id="canvas" width="1024" height="1024"></canvas>
+
+    <script>
+            function printStatus(status) {
+                document.getElementById("status").innerHTML = status;
+            }
+
+            let wakeLockObj = null;
+
+            function wake_lock_toggle() {
+                if ("keepAwake" in screen) {
+                    screen.keepAwake = !screen.keepAwake;
+                    printStatus(screen.keepAwake ? 'acquired' : 'not acquired');
+                } else if ("wakeLock" in navigator) {
+                    if (wakeLockObj) {
+                        wakeLockObj.release();
+                        wakeLockObj = null;
+                        printStatus('released');
+                    } else {
+                        printStatus('acquiring...');
+                        navigator.wakeLock.request('screen')
+                            .then((wakeLock) => {
+                                wakeLockObj = wakeLock;
+
+                                wakeLockObj.addEventListener('release', () => {
+                                    printStatus('released externally');
+                                    wakeLockObj = null;
+                                })
+
+                                printStatus('acquired');
+                            })
+                            .catch((err) => {
+                                console.error(err);
+                                printStatus('failed to acquire: ' + err.message);
+                            })
+                    }
+                }
+            }
+
+            console.log("nav", navigator);
+            if ("keepAwake" in screen) {
+                document.getElementById("api").innerHTML = 'screen.keepAwake';
+                printStatus('not acquired');
+            } else if ("wakeLock" in navigator) {
+                document.getElementById("api").innerHTML = 'navigator.wakeLock';
+                printStatus('not acquired');
+            } else {
+                printStatus("confused");
+            }
+
+    </script>
 </body>
 
 </html>
