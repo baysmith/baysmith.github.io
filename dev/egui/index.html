@@ -137,13 +137,6 @@
         }
 
         function mouse_pos_from_event(canvas, event) {
-            // Enable wake lock.
-            // (must be wrapped in a user input event handler e.g. a mouse or touch handler)
-            if (!no_sleep_enabled) {
-                no_sleep.enable();
-                no_sleep_enabled = true;
-            }
-
             var rect = canvas.getBoundingClientRect();
             return {
                 x: event.clientX - rect.left,
@@ -178,6 +171,14 @@
             };
 
             canvas.addEventListener("mousedown", function (event) {
+                // Enable wake lock.
+                // (must be wrapped in a user input event handler e.g. a mouse or touch handler)
+                if (!no_sleep_enabled) {
+                    no_sleep.enable();
+                    no_sleep_enabled = true;
+                    console.log("no sleep enabled");
+                }
+
                 if (g_is_touch) { return; }
                 g_mouse_pos = mouse_pos_from_event(canvas, event);
                 g_mouse_down = true;
