@@ -1,88 +1,91 @@
 <html lang="en-us">
-<head>
-<title>Bradley A. Smith</title>
-<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script type="text/javascript" src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.4.3.min.js"></script>
-<script type="text/javascript">
-var layout = {
-    width: 50,
-    circles: [],
-    items: [],
-    update: function() {
-        var x = layout.width / 2;
-        var y = 30;
-        var lineStart = 0;
-        var lineEnd = 0;
-        for (var i = 0; i < layout.items.length; ++i) {
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bradley A. Smith</title>
+    <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/konva@7.0.3/konva.min.js"></script>
+    <script type="text/javascript">
+      var layout = {
+        width: 50,
+        circles: [],
+        items: [],
+        update: function() {
+          var win_width = Math.min($(window).width(), 800);
+          var x = layout.width / 2;
+          var y = 30;
+          var lineStart = 0;
+          var lineEnd = 0;
+          for (var i = 0; i < layout.items.length; ++i) {
             var item = layout.items[i];
             var circle = layout.circles[i];
-            circle.transitionTo({
-                y: y,
-                duration: 0.5
+            circle.to({
+              y: y,
+              duration: 0.5
             });
             item.style.position = 'absolute';
             item.style.top = (y-10) + 'px';
             item.style.left = layout.width + 'px';
-            item.style.width = ($(window).width() - layout.width - 30) + 'px'
+            item.style.width = (win_width - layout.width - 30) + 'px';
             if (i == 0) {
-                lineStart = y;
+              lineStart = y;
             }
             if (i+1 == layout.items.length) {
-                lineEnd = y;
+              lineEnd = y;
             }
             y += Math.max(50, item.clientHeight + 20);
-        }
-        layout.line.setPoints([x, lineStart, x, lineEnd]);
-        layout.stage.setHeight(y + 20);
-    },
-    init: function() {
-        var circlesLayer = new Kinetic.Layer();
-        $('#items').children().each(function(index, item){
+          }
+          layout.line.setPoints([x, lineStart, x, lineEnd]);
+          layout.stage.setHeight(y + 20);
+        },
+        init: function() {
+          var circlesLayer = new Konva.Layer();
+          $('#items').children().each(function(index, item){
             layout.items.push(item);
-            var circle = new Kinetic.Circle({
-                x: layout.width / 2,
-                y: 12,
-                radius: 10,
-                fill: (index == 0 ? 'yellow' : 'green'),
-                stroke: 'black',
-                strokeWidth: 4
+            var circle = new Konva.Circle({
+              x: layout.width / 2,
+              y: 12,
+              radius: 10,
+              fill: (index == 0 ? 'yellow' : 'green'),
+              stroke: 'black',
+              strokeWidth: 4
             });
             circlesLayer.add(circle);
             layout.circles.push(circle);
-        });
+          });
 
-        layout.line = new Kinetic.Line({
+          layout.line = new Konva.Line({
             points: [0, 0, 1, 1],
             stroke: 'black',
             strokeWidth: 5,
             lineCap: 'round',
             lineJoin: 'round'
-        });
+          });
 
-        var lineLayer = new Kinetic.Layer();
-        lineLayer.add(layout.line);
+          var lineLayer = new Konva.Layer();
+          lineLayer.add(layout.line);
 
-        layout.stage = new Kinetic.Stage({
+          layout.stage = new Konva.Stage({
             container: 'container',
             width: layout.width,
             height: layout.width
-        });
-        layout.stage.add(lineLayer);
-        layout.stage.add(circlesLayer);
+          });
+          layout.stage.add(lineLayer);
+          layout.stage.add(circlesLayer);
 
-        layout.update();
-        $(window).resize(function() {
+          layout.update();
+          $(window).resize(function() {
             layout.update();
-        });
-    }
-};
+          });
+        }
+      };
 $(document).ready(function() {
-    layout.init();
+  layout.init();
 });
-</script>
-<link rel="stylesheet" href="fonts/fonts.css" type="text/css" charset="utf-8">
-<style type="text/css">
+    </script>
+    <link rel="stylesheet" href="fonts/fonts.css" type="text/css" charset="utf-8">
+    <style type="text/css">
 h1 {
   font-family: 'DroidSerifBoldItalic', serif;
 }
@@ -95,7 +98,7 @@ body {
 }
 
 .bold {
-    font-family: 'DroidSansBold', sans-serif;
+  font-family: 'DroidSansBold', sans-serif;
 }
 
 #header {
@@ -121,38 +124,60 @@ body {
   top: 0;
   left: 0;
 }
-</style>
-</head>
+.item {
+  padding-bottom: 20px;
+}
+    </style>
+  </head>
   <body>
     <h1>Bradley A. Smith</h1>
     <div id="pos">
       <div id="contain">
         <div id="container"></div>
         <div id="items">
-          <div> <span class="bold">Senior Programmer</span> for <a href="http://sms.playstation.com/">Santa Monica Studio</a> of <a href="https://www.playstation.com/en-us/corporate/about/">Sony Computer Entertainment America</a>, creating tools used in developing games for the <a href="http://playstation.com">Playstation</a> console.</div>
-          <div> <span class="bold">Software Engineer</span> for <a href="http://www.rhythm.com/">Rhythm
-              &amp; Hues Studios</a>, improving the user interfaces of
+
+          <div class="item"> <span class="bold">Senior Programmer</span> for <a
+              href="http://sms.playstation.com/">Santa Monica Studio</a> of <a
+              href="https://www.playstation.com/en-us/corporate/about/">Sony
+              Interactive Entertainment America</a>, creating tools used in
+            developing games for the <a
+              href="http://playstation.com">Playstation</a> console.</div>
+
+          <div class="item"> <span class="bold">Software Engineer</span> for <a
+              href="http://www.rhythm.com/">Rhythm &amp; Hues Studios</a>,
+            improving the user interfaces of
             proprietary R&amp;H visual effects software.</div>
-          <div> <span class="bold">Project Leader</span> of the open source <a href="https://github.com/mifit">MIFit</a>
-            project, a cross-platform interactive graphics application for
+
+          <div class="item"> <span class="bold">Project Leader</span> of the
+            open source <a href="https://github.com/mifit">MIFit</a> project, a
+            cross-platform interactive graphics application for
             molecular modeling, fitting, and refinement of protein structures
             from x-ray crystallography.</div>
-          <div> <span class="bold">Software developer</span> for 2 years with <a href="http://www.rigaku.com/index_en.html">Rigaku
-              Americas Corporation</a> as project leader for the MIFit program.</div>
-          <div> <span class="bold">Software developer</span> for 6 years in the Crystallography
-            department of <a href="http://www.pfizer.com/">Pfizer Global
-              Research and Development</a> in La Jolla, California (formerly
-            Agouron Pharamceuticals, Inc.).</div>
-          <div> <span class="bold">Postdoctoral associate</span> at <a href="http://www.isispharm.com/">Isis
-              Pharmaceuticals</a>. I assisted their efforts to discover new
-            drugs targeting RNA by computationally screening libraries of
-            compounds and designing new novel molecules. Tasks which required a
-            wide variety of my skills as chemist, programmer, and system
-            administrator.</div>
-          <div><span class="bold">Ph.D.</span> from the <a href="http://www.umn.edu/">University
+
+          <div class="item"> <span class="bold">Software developer</span> for 2
+            years with <a href="http://www.rigaku.com/index_en.html">Rigaku
+              Americas Corporation</a> as project leader for the MIFit
+            program.</div>
+
+          <div class="item"> <span class="bold">Software developer</span> for 6
+            years in the Crystallography department of <a
+              href="http://www.pfizer.com/">Pfizer Global Research and
+              Development</a> in La Jolla, California (formerly Agouron Pharamceuticals, Inc.).</div>
+
+          <div class="item"> <span class="bold">Postdoctoral associate</span>
+            at <a href="http://www.isispharm.com/">Isis Pharmaceuticals</a>. I
+            assisted their efforts to discover new drugs targeting RNA by
+            computationally screening libraries of compounds and designing new
+            novel molecules. Tasks which required a wide variety of my skills
+          as chemist, programmer, and system administrator.</div>
+
+          <div class="item"><span class="bold">Ph.D.</span> from the <a
+              href="http://www.umn.edu/">University
               of Minnesota</a>.</div>
-          <div><span class="bold">B.S.</span> from <a href="http://www.osu.edu/">The Ohio
-              State University</a>.</div>
+
+          <div class="item"><span class="bold">B.S.</span> from <a
+              href="http://www.osu.edu/">The Ohio State University</a>.</div>
+
         </div>
       </div>
     </div>
