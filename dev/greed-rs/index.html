@@ -61,6 +61,41 @@
             // This call installs a bunch of callbacks and then return
             wasm_bindgen.start("the_canvas_id");
         }
+
+        function request_fullscreen() {
+            document.documentElement.requestFullscreen();
+        }
+
+        function exit_fullscreen() {
+            document.exitFullscreen();
+        }
+
+        let wake_lock = null;
+        function toggle_wake_lock() {
+            if (!('wakeLock' in navigator && 'request' in navigator.wakeLock)) {
+                console.log("wake lock not supported");
+                return;
+            }
+
+            const request_wake_lock = async () => {
+                try {
+                    wake_lock = await navigator.wakeLock.request('screen');
+                    wake_lock.addEventListener('release', () => {
+                        console.log('Wake Lock was released');
+                    });
+                    console.log('Wake Lock is active');
+                } catch (e) {
+                    console.error(`${e.name}, ${e.message}`);
+                }
+            };
+
+            if (wake_lock) {
+                wake_lock.release();
+                wake_lock = null;
+            } else {
+                request_wake_lock();
+            }
+        }
     </script>
 </body>
 
