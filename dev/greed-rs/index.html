@@ -34,9 +34,6 @@
     -->
     <canvas id="the_canvas_id"></canvas>
 
-    <script src="https://www.gstatic.com/firebasejs/8.2.2/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.2.2/firebase-database.js"></script>
-
     <script>
         // The `--no-modules`-generated JS from `wasm-bindgen` attempts to use
         // `WebAssembly.instantiateStreaming` to instantiate the wasm module,
@@ -102,30 +99,6 @@
 
         function prompt_player() {
             return prompt("Player name", "");
-        }
-
-        function prompt_share_game() {
-            return prompt("Name for shared game", "");
-        }
-
-        var game_db = null;
-        function initialize_shared_database(config) {
-            firebase.initializeApp(config);
-        }
-
-        function get_shared_game(game_name, on_change) {
-            game_db = firebase.database().ref(game_name);
-            game_db.on("value", function(snapshot) {
-                var val = snapshot.toJSON();
-                val.players = Object.values(val.players);
-                on_change(val);
-            });
-        }
-
-        function set_shared_game(game_name, state) {
-            if (game_db) {
-                game_db.set(state);
-            }
         }
     </script>
 </body>
