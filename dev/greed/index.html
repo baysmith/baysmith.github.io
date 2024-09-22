@@ -7,8 +7,8 @@
 
 <head>
     <title>Greed Score</title>
-
     <!-- config for our rust wasm binary. go to https://trunkrs.dev/assets/#rust for more customization -->
+    <link rel="preload" href="/dev/greed/greed_score-658831372e2e1476_bg.wasm" as="fetch" type="application/wasm" crossorigin="">
     
 <script type="module">
 let wasm;
@@ -1402,7 +1402,7 @@ function initSync(module) {
 
     if (!(module instanceof WebAssembly.Module)) {
         // module = new WebAssembly.Module(module);
-        module = new WebAssembly.Module('/test/greed_score-658831372e2e1476_bg.wasm');
+        module = new WebAssembly.Module('/dev/greed/greed_score-658831372e2e1476_bg.wasm');
     }
 
     const instance = new WebAssembly.Instance(module, imports);
@@ -1432,7 +1432,7 @@ async function __wbg_init(input) {
 // export { initSync }
 // export default __wbg_init;
 
-wasm = await __wbg_init('/test/greed_score-658831372e2e1476_bg.wasm');
+wasm = await __wbg_init('/dev/greed/greed_score-658831372e2e1476_bg.wasm');
 
 window.wasmBindings = wasm;
 
