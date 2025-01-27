@@ -11,8 +11,8 @@
     <!-- config for our rust wasm binary. go to https://trunkrs.dev/assets/#rust for more customization -->
     
 <script type="module">
-import init, * as bindings from './greed_score-8e47afa1ad333cef.js';
-const wasm = await init({ module_or_path: './greed_score-8e47afa1ad333cef_bg.wasm' });
+import init, * as bindings from './greed_score-b8dbb84c2652d63b.js';
+const wasm = await init({ module_or_path: './greed_score-b8dbb84c2652d63b_bg.wasm' });
 
 
 window.wasmBindings = bindings;
@@ -120,7 +120,7 @@ dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
             }
         }
     </style>
-<link rel="modulepreload" href="./greed_score-8e47afa1ad333cef.js" crossorigin="anonymous" integrity="sha384-B6KKubIg/ESVY3VQPmZ2o88JRfPTVv13vtEv5U0dYyK4/cUP8pK3X37FhqNbDHwM"><link rel="preload" href="./greed_score-8e47afa1ad333cef_bg.wasm" crossorigin="anonymous" integrity="sha384-oUJ9RmNfhBoSSRLW5rBPI2PEOpuCjFLUGpL3HmP+cpfzWbMJd5tywmtM/ER0EjgM" as="fetch" type="application/wasm"></head>
+<link rel="modulepreload" href="./greed_score-b8dbb84c2652d63b.js" crossorigin="anonymous" integrity="sha384-B6KKubIg/ESVY3VQPmZ2o88JRfPTVv13vtEv5U0dYyK4/cUP8pK3X37FhqNbDHwM"><link rel="preload" href="./greed_score-b8dbb84c2652d63b_bg.wasm" crossorigin="anonymous" integrity="sha384-P0YTmFUavZrd2Llyfwa9wTCJHtWchPDiZi55VgEGHBb9nwJb5yyPSGmK7M37U5aW" as="fetch" type="application/wasm"></head>
 
 <body>
     <!-- The WASM code will resize the canvas dynamically -->
