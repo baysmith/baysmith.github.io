@@ -1,0 +1,9 @@
+{
+  "name": "Spring",
+  "short_name": "spring",
+  "lang": "en-US",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#404040",
+  "theme_color": "#404040"
+}
